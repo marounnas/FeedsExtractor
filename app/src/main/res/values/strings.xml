@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Feeds Extractor</string>
+
+    <string name="action_filters">Filters</string>
+    <string name="action_search">Search</string>
+
+    <string name="error_no_connection">No connection</string>
+    <string name="loading">Loading tweets...</string>
+    <string name="no_data">Sorry, no tweets right now...</string>
+</resources>
