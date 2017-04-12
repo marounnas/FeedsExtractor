@@ -1,5 +1,8 @@
 package com.shedd.feedsextractor.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,15 +11,21 @@ import java.io.Serializable;
  * Created by Admin on 4/11/2017.
  */
 
-public class User implements Serializable {
+public class User implements Parcelable {
 
     @SerializedName("name")
     private String name;
     @SerializedName("screen_name")
     private String screenName;
-    @SerializedName("profile_background_image_url_https")
+    @SerializedName("profile_background_image_url")
     private String imageUrl;
 
+    public User() {
+    }
+
+    public User(Parcel source) {
+        readFromParcel(source);
+    }
 
     public String getName() {
         return name;
@@ -42,4 +51,33 @@ public class User implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(screenName);
+        dest.writeString(imageUrl);
+    }
+
+    public void readFromParcel(Parcel source) {
+        name = source.readString();
+        screenName = source.readString();
+        imageUrl = source.readString();
+    }
+
+    public static Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+    };
 }

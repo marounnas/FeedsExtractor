@@ -4,7 +4,12 @@
     <string name="action_filters">Filters</string>
     <string name="action_search">Search</string>
 
-    <string name="error_no_connection">No connection</string>
+    <string name="dialog_remove_filter">Are you sure you want to remove this filter?</string>
+
+    <string name="snack_filter_added">Your filter has been added</string>
+    <string name="snack_error_no_connection">No connection</string>
+    <string name="snack_no_data">Sorry, no tweets right now...</string>
+
     <string name="loading">Loading tweets...</string>
-    <string name="no_data">Sorry, no tweets right now...</string>
+    <string name="no_filters">No saved filters. Please go back and add a filter by typing your search in the action bar then clicking on the keyboard\'s magnifier </string>
 </resources>

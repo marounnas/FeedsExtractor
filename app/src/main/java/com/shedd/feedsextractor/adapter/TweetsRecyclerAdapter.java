@@ -20,9 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by eddy on 3/18/2016.
- */
 public class TweetsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Tweet> mObjects;
@@ -30,8 +27,17 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private ActionPerformedListener IActionPerformedListener;
 
     public TweetsRecyclerAdapter(Context context, ArrayList<Tweet> objects) {
-        mContext = context;
-        mObjects = objects;
+        this.mContext = context;
+        this.mObjects = objects;
+    }
+
+    public void updateList(ArrayList<Tweet> list) {
+        mObjects = list;
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<Tweet> getItems() {
+        return mObjects;
     }
 
     public static class TweetHolder extends RecyclerView.ViewHolder {
@@ -63,36 +69,39 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private void onBindTweetsHolder(final TweetHolder holder, final int position) {
-        Tweet tweet = mObjects.get(position);
+        final Tweet tweet = mObjects.get(position);
 
-
+        if (position == mObjects.size() - 1) {
+            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
+                    RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 10, 0, 10);
+            holder.container.setLayoutParams(params);
+        }
         try {
-            final String TWITTER_DATE = "EEE MMM dd HH:mm:ss Z yyyy";
+            SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
             String strCurrentDate = tweet.getDate();
-            SimpleDateFormat format = new SimpleDateFormat(TWITTER_DATE);
-            Date newDate = format.parse(strCurrentDate);
-            format = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
-            String date = format.format(newDate);
+            Date newDate = mDateFormat.parse(strCurrentDate);
+            mDateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+            String date = mDateFormat.format(newDate);
             holder.date.setText(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             holder.description.setText(Html.fromHtml(tweet.getMessage(), 0));
-
-        } else {
+        else
             holder.description.setText(Html.fromHtml(tweet.getMessage()));
-        }
         holder.image.setImageURI(tweet.getUser() != null ? Uri.parse(tweet.getUser().getImageUrl()) : Uri.parse(""));
-
-
 
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (IActionPerformedListener != null)
-                    IActionPerformedListener.OnTweetClicked(position);
+                if (IActionPerformedListener != null) {
+                    IActionPerformedListener.OnTweetClicked(tweet.getEntities().getUrls().get(0) != null ? tweet.getEntities().getUrls().get(0).getUrl() : "");
+                }
             }
         });
     }
@@ -110,11 +119,11 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public interface ActionPerformedListener {
-        public void OnTweetClicked(int position);
+        void OnTweetClicked(String url);
     }
-
 
     public void setActionPerformedListener(ActionPerformedListener IActionPerformedListener) {
         this.IActionPerformedListener = IActionPerformedListener;
     }
+
 }

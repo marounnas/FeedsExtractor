@@ -22,10 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Admin on 4/11/2017.
- */
-
 public class GetTweetsTask extends AsyncTask<String, Void, Void> {
 
     public static String TAG = "AsyncTaskGetTweets";
@@ -57,7 +53,7 @@ public class GetTweetsTask extends AsyncTask<String, Void, Void> {
         if (cd.isConnectedToInternet()) {
 
             try {
-                URL url = new URL("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + param[0]);
+                URL url = new URL("https://api.twitter.com/1.1/statuses/user_timeline.json?count=200&screen_name=" + param[0]);
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
 
@@ -94,11 +90,11 @@ public class GetTweetsTask extends AsyncTask<String, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         if (noConnection) {
-            mListener.onError(TAG, mContext.getString(R.string.error_no_connection));
+            mListener.onError(TAG, mContext.getString(R.string.snack_error_no_connection));
             return;
         }
         if (response.isEmpty()) {
-            mListener.onEmptyResponse(TAG, mContext.getString(R.string.no_data));
+            mListener.onEmptyResponse(TAG, mContext.getString(R.string.snack_no_data));
             return;
         }
         mListener.onSuccess(TAG, response);
