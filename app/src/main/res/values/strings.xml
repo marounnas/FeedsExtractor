@@ -12,4 +12,5 @@
 
     <string name="loading">Loading tweets...</string>
     <string name="no_filters">No saved filters. Please go back and add a filter by typing your search in the action bar then clicking on the keyboard\'s magnifier </string>
+    <string name="no_url">No link available for this Tweet</string>
 </resources>

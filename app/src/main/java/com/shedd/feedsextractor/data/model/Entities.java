@@ -39,7 +39,7 @@ public class Entities implements Parcelable {
     }
 
     public void readFromParcel(Parcel source) {
-//        urls = source.readParcelableArray(Urls.class.getClassLoader());
+        urls = source.readArrayList(Urls.class.getClassLoader());
     }
 
     public static Creator<Entities> CREATOR = new Creator<Entities>() {

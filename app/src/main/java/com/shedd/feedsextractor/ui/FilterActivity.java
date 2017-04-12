@@ -3,6 +3,8 @@ package com.shedd.feedsextractor.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +38,7 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     private void initScreen() {
+        final CoordinatorLayout container = (CoordinatorLayout) findViewById(R.id.container);
         RecyclerView filterTweetsList = (RecyclerView) findViewById(R.id.filter_tweets_list);
         TweetsRecyclerAdapter adapter = new TweetsRecyclerAdapter(FilterActivity.this, filter.getTweets());
         filterTweetsList.setHasFixedSize(true);
@@ -44,8 +47,12 @@ public class FilterActivity extends AppCompatActivity {
         adapter.setActionPerformedListener(new TweetsRecyclerAdapter.ActionPerformedListener() {
             @Override
             public void OnTweetClicked(String url) {
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + url));
-                startActivity(i);
+                if (url.contains("http")) {
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(i);
+                } else
+                    Snackbar.make(container, getString(R.string.no_url), Snackbar.LENGTH_SHORT)
+                            .show();
             }
         });
     }

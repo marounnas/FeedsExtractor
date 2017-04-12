@@ -3,6 +3,7 @@ package com.shedd.feedsextractor.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -100,7 +101,10 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             @Override
             public void onClick(View v) {
                 if (IActionPerformedListener != null) {
-                    IActionPerformedListener.OnTweetClicked(tweet.getEntities().getUrls().get(0) != null ? tweet.getEntities().getUrls().get(0).getUrl() : "");
+                    if (tweet.getEntities() != null && tweet.getEntities().getUrls() != null && !tweet.getEntities().getUrls().isEmpty() && tweet.getEntities().getUrls().get(0) != null && tweet.getEntities().getUrls().get(0).getUrl() != null)
+                        IActionPerformedListener.OnTweetClicked(tweet.getEntities().getUrls().get(0).getUrl());
+                    else
+                        IActionPerformedListener.OnTweetClicked("");
                 }
             }
         });

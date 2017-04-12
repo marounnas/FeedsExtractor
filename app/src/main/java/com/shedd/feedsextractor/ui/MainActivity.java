@@ -98,8 +98,12 @@ public class MainActivity extends AppCompatActivity {
         adapter.setActionPerformedListener(new TweetsRecyclerAdapter.ActionPerformedListener() {
             @Override
             public void OnTweetClicked(String url) {
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(i);
+                if (url.contains("http")) {
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(i);
+                } else
+                    Snackbar.make(container, getString(R.string.no_url), Snackbar.LENGTH_SHORT)
+                            .show();
             }
         });
     }
